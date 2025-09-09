@@ -4,7 +4,7 @@ from rich.logging import RichHandler
 
 from .settings import settings
 
-FORMAT = "| %(filename)s:%(lineno)d >>> %(message)s"
+FORMAT = "(%(filename)s: %(lineno)d) | %(message)s"
 
 
 def setup_logging():
