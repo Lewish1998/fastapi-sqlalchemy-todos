@@ -6,7 +6,7 @@ from src.models.todo import Todo, TodoRequest
 
 async def service_add_new_todo(todo: TodoRequest) -> Todo:
     async with async_session() as sesh:
-        new_todo = Todo(title=todo.title)
+        new_todo = Todo(**todo.model_dump())
         sesh.add(new_todo)
         await sesh.commit()
         await sesh.refresh(new_todo)
@@ -17,4 +17,11 @@ async def service_get_all_todos():
     async with async_session() as sesh:
         res = await sesh.execute(select(Todo))
         todos = res.scalars().all()
+        return todos
+
+
+async def service_get_todo_by_id(id: int):
+    async with async_session() as sesh:
+        res = await sesh.execute(select(Todo).where(Todo.id == id))
+        todos = res.fetchone()
         return todos
